@@ -3,21 +3,21 @@ class lightDisplay:
     lights = None
 
     def __init__(self, L):
-        self.lights = [[False for x in range(L)] for x in range(L)]
+        self.lights = [[False for x in range(L)] for y in range(L)]
         self.dimension = L
     
-    def action(self, cmd, a, b, x, y):
+    def action(self, cmd, x_1, y_1, x_n, y_n):
         if cmd == "turn on":
-            for i in range(a,x):
-                for j in range(b,y):
+            for i in range(x_1,x_n):
+                for j in range(y_1,y_n):
                     self.lights[i][j] = True
         elif cmd == "turn off":
-            for i in range(a,x):
-                for j in range(b,y):
+            for i in range(x_1,x_n):
+                for j in range(y_1,y_n):
                     self.lights[i][j] = False
         elif cmd == "switch":
-            for i in range(a,x):
-                for j in range(b,y):
+            for i in range(x_1,x_n):
+                for j in range(y_1,y_n):
                     if self.lights[i][j] == True:
                         self.lights[i][j] = False
                     elif self.lights[i][j] == False:
