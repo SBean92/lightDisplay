@@ -4,6 +4,7 @@ class lightDisplay:
 
     def __init__(self, L):
         self.lights = [[False for x in range(L)] for x in range(L)]
+        self.dimension = L
     
     def action(self, cmd, a, b, x, y):
         if cmd == "turn on":
@@ -23,4 +24,15 @@ class lightDisplay:
                         self.lights[i][j] = True
 
     def count(self):
-        #TO-DO
+        self.tCount = 0
+        self.fCount = 0
+        for i in range(self.dimension):
+            for j in range(self.dimension):
+                if self.lights[i][j] == True:
+                    self.tCount += 1
+                elif self.lights[i][j] == False:
+                    self.fCount += 1
+        print("There are",self.tCount,"lights on and",self.fCount,"lights off")
+        #TO-DO: Add statements for when there are no lights on or all lighst on so on....
+                
+        
