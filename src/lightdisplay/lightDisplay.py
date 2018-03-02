@@ -57,6 +57,7 @@ def main():
             x_n = p.group('x_n')
             y_n = p.group('y_n')
             gridLED.action(cmd,x_0,y_0,x_n,y_n)
+    gridLED.count()
 
 if __name__ == "lightDisplay":
     main()
