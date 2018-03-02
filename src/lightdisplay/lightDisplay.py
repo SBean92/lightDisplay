@@ -1,3 +1,6 @@
+import fileinput
+import re
+
 class lightDisplay:
 
     def __init__(self, L):
@@ -40,3 +43,20 @@ class lightDisplay:
             print("There are",self.tCount,"lights on and one light off")
         else:
             print("There are",self.tCount,"lights on and",self.fCount,"lights off")
+
+def main():
+    f = fileinput.input()
+    for line in f:
+        if (f.isfirstline()):
+            gridLED = lightDisplay(line)
+        else:
+            p = re.match(".*(?P<cmd>turn on|turn off|switch)\s*(?P<x_0>[+-]?\d+)\s*,\s*(?P<y_0>[+-]?\d+)\s*through\s*(?P<x_n>[+-]?\d+)\s*,\s*(?P<y_n>[+-]?\d+).*", line)
+            cmd = p.group('cmd')
+            x_0 = p.group('x_0')
+            y_0 = p.group('y_0')
+            x_n = p.group('x_n')
+            y_n = p.group('y_n')
+            gridLED.action(cmd,x_0,y_0,x_n,y_n)
+
+if __name__ == "lightDisplay":
+    main()
