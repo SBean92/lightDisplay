@@ -28,5 +28,5 @@ def setup_package():
         },
         use_pyscaffold=True)
 
-if __name__ == "solveLED":
+if __name__ == "main()":
     setup_package()

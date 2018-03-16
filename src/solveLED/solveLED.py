@@ -1,8 +1,9 @@
-import fileinput
+import urllib.request
 import re
+import sys
 
 class lightDisplay:
-
+    lights = None
     def __init__(self, L):
         self.lights = [[False for x in range(L)] for y in range(L)]
         self.dimension = L
@@ -44,16 +45,27 @@ class lightDisplay:
         else:
             print("There are",self.tCount,"lights on and",self.fCount,"lights off")
 
-f = fileinput.input()
-for line in f:
-    if (f.isfirstline()):
-        gridLED = lightDisplay(line)
-    else:
-        p = re.match(".*(?P<cmd>turn on|turn off|switch)\s*(?P<x_0>[+-]?\d+)\s*,\s*(?P<y_0>[+-]?\d+)\s*through\s*(?P<x_n>[+-]?\d+)\s*,\s*(?P<y_n>[+-]?\d+).*", line)
-        cmd = p.group('cmd')
-        x_0 = p.group('x_0')
-        y_0 = p.group('y_0')
-        x_n = p.group('x_n')
-        y_n = p.group('y_n')
-        gridLED.action(cmd,x_0,y_0,x_n,y_n)
-gridLED.count()
+def main():
+    x = sys.argv[1:]
+    data = urllib.request.urlopen(x[0])
+    lineSem = 0
+    for line in data:
+        if lineSem == 0:
+            lineSem += 1
+            gridLED = lightDisplay(int(line.decode('utf-8')))
+        else:
+            p = re.match(".*(turn on|turn off|switch)\s*([+-]?\d+)\s*,\s*([+-]?\d+)\s*through\s*([+-]?\d+)\s*,\s*([+-]?\d+).*", line.decode('utf-8'))
+            cmd = p.group(1)
+            x_0 = p.group(2)
+            y_0 = p.group(3)
+            x_n = p.group(4)
+            y_n = p.group(5)
+            if int(x_0) < 0 or int(y_0) < 0 or int(x_0) > int(x_n) or int(y_0) > int(y_n) or int(x_n) > gridLED.dimension or int(y_n) > gridLED.dimension:
+                print("Dimensions out of range, skipping line")
+            else:
+                gridLED.action(cmd,int(x_0),int(y_0),int(x_n),int(y_n))
+    gridLED.count()
+
+
+if __name__ == '__main__':
+    main()
