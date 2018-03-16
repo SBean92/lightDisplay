@@ -55,15 +55,18 @@ def main():
             gridLED = lightDisplay(int(line.decode('utf-8')))
         else:
             p = re.match(".*(turn on|turn off|switch)\s*([+-]?\d+)\s*,\s*([+-]?\d+)\s*through\s*([+-]?\d+)\s*,\s*([+-]?\d+).*", line.decode('utf-8'))
-            cmd = p.group(1)
-            x_0 = p.group(2)
-            y_0 = p.group(3)
-            x_n = p.group(4)
-            y_n = p.group(5)
-            if int(x_0) < 0 or int(y_0) < 0 or int(x_0) > int(x_n) or int(y_0) > int(y_n) or int(x_n) > gridLED.dimension or int(y_n) > gridLED.dimension:
-                print("Dimensions out of range, skipping line")
+            if p != None:
+                cmd = p.group(1)
+                x_0 = p.group(2)
+                y_0 = p.group(3)
+                x_n = p.group(4)
+                y_n = p.group(5)
+                if int(x_0) < 0 or int(y_0) < 0 or int(x_0) > int(x_n) or int(y_0) > int(y_n) or int(x_n) > gridLED.dimension or int(y_n) > gridLED.dimension:
+                    print("Dimensions out of range, skipping line")
+                else:
+                    gridLED.action(cmd,int(x_0),int(y_0),int(x_n),int(y_n))
             else:
-                gridLED.action(cmd,int(x_0),int(y_0),int(x_n),int(y_n))
+                print("Invalid Command, skipping line")
     gridLED.count()
 
 
